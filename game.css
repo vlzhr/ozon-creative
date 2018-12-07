@@ -43,7 +43,7 @@ body * {
     background: url(images/smile-negative.png) no-repeat;
     background-size: cover;
     width: 110px;
-    height: 100px;
+    height: 152px;
     content: "";
 
     position: absolute;
@@ -166,6 +166,8 @@ body * {
 }
 
 .action-price {
+    position: absolute;
+    bottom: 0;
     margin: 40px auto 20px;
     content: "";
     height: 200px;

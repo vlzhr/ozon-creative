@@ -20,13 +20,13 @@
         </div>
         <div class="fliers-container">
             <div class="flying-price">
-                <span class="old-price-label">50000rub</span>
+                <span class="old-price-label"></span>
             </div>
             <div class="discount">- 5000 &#8381;</div>
 
             <div class="action-price">
                 <img src="images/smile-positive.png" alt="">
-                <span class="final-price-label">40000rub</span>
+                <span class="final-price-label"></span>
             </div>
         </div>
         <div class="win-screen">
@@ -60,8 +60,8 @@
 
         itemImage.src = currentItem["image"];
         itemName.innerText = currentItem["name"];
-        finalPriceLabel.innerText = currentItem["new-price"];
-        oldPriceLabel.innerText = currentItem["old-price"];
+        // finalPriceLabel.innerText = currentItem["new-price"];
+        // oldPriceLabel.innerText = currentItem["old-price"];
         discount.innerHTML = currentItem["discount"];
         canvas.style.borderColor = currentItem["border-color"];
 
@@ -130,6 +130,7 @@
     }
     
     function discountFlight() {
+        return;
         discount.classList.add("active");
         discount.style.top = discountFinalPosition[1] + "px";
         discount.style.left = discountFinalPosition[0] + "px";
@@ -205,6 +206,7 @@
 
     //-- usage --//
     preload(
+        "images/backgeound.png",
         "item-1.png",
         "item-2.png",
         "item-3.png",
@@ -227,6 +229,7 @@
         }, { passive: false });
 
         startGame();
+        // showWinScreen();
     });
 </script>
 </html>
