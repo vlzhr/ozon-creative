@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ozon Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            margin: 0;
+        }
+        section {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            pointer-events: none;
+        }
+        svg {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: blue;
+        }
+        svg line {
+            z-index: 50;
+            animation: away
+        }
+        div {
+            position: absolute;
+            top: 100px;
+            width: 100px;
+            box-sizing: border-box;
+            left: 100px;
+            color: white;
+            padding: 15px;
+            background: aquamarine;
+            z-index: 40;
+            animation: swimmingDiv 2s infinite;
+        }
+        div.chosen {
+            background: red;
+        }
+        @keyframes swimmingDiv {
+            0% {
+                /*animation-timing-function: ease-in;*/
+                left: -100px;
+                top: 300px;
+            }
+            /*}*/
+            /*25% {*/
+                /*left: 80px;*/
+                /*top: 100px;*/
+            /*}*/
+            38% {
+                /*animation-timing-function: ease-in;*/
+                left: 120px;
+                top: 10px;
+            }
+            /*70% {*/
+                /*left: 250px;*/
+                /*top: 100px;*/
+            /*}*/
+            100% {
+                left: 300px;
+                top: 300px;
+            }
+        }
+        .dying-slice {
+            animation: dyingSlice 2s;
+        }
+        @keyframes dyingSlice {
+            0% {
+                opacity: 1;
+                display: block;
+            }
+            99% {
+                display: block;
+                opacity: 0.1;
+            }
+            100% {
+                display: none;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg>
+    </svg>
+    <div>OZON SALES!!!!</div>
+
+</body>
+<script>
+    var svg = document.querySelector("svg");
+    var div = document.querySelector("div");
+    function showSlice(fr, to) {
+        // var line = document.createElement("line");
+        // line.x1 = fr[0];
+        // line.y1 = fr[1];
+        // line.x2 = to[0];
+        // line.y2 = to[1];
+        // line.style = "stroke:rgb(255,0,0);stroke-width:2";
+        // line.classList.add("d");
+        // svg.appendChild(line);
+        // window.setTimeout(function(){
+        //     line.remove();
+        // }, 2000);
+        svg.innerHTML = `<line x1="${fr[0]}" y1="${fr[1]}" x2="${to[0]}" y2="${to[1]}" style = "stroke:rgb(255,0,0);stroke-width:2">`
+    }
+
+    function touchendHandler(event) {
+        console.log(event);
+    }
+    function touchstartHandler(event) {
+        console.log("vse");
+    }
+
+    var lastMouseDownPoint = false;
+    function mousedownHandler(event) {
+
+        lastMouseDownPoint = [event.layerX, event.layerY];
+    }
+    function mouseupHandler(event) {
+        console.log("mouse UP", event);
+
+        var pointTo = [event.layerX, event.layerY];
+        showSlice(lastMouseDownPoint, pointTo);
+        lastMouseDownPoint = false;
+        mousemoveChangeClassThrottle = false;
+    }
+
+    var mousemoveThrottle = false;
+    var mousemoveThrottleInterval = 80;
+    var mousemoveChangeClassThrottle = false;
+    var mousemoveChangeClassThrottleInterval = 800;
+    function mousemoveHandler(event) {
+        console.log(event);
+        if (mousemoveThrottle) {return;}
+        else {
+            mousemoveThrottle = true;
+            window.setTimeout(function() { mousemoveThrottle = false; }, mousemoveThrottleInterval)
+        }
+
+        if (lastMouseDownPoint) {
+            if (mousemoveChangeClassThrottle) {
+                return;
+            } else {
+                div.classList.toggle("chosen");
+                mousemoveChangeClassThrottle = true;
+                window.setTimeout(function() { mousemoveChangeClassThrottle = false; }, mousemoveChangeClassThrottleInterval)
+            }
+        }
+        // var x = event.clientX, y = event.clientY,
+        //     elementMouseIsOver = document.elementFromPoint(x, y);
+        // console.log(elementMouseIsOver);
+    }
+
+    touchstartHandler = mousedownHandler;
+    touchendHandler = mouseupHandler;
+    var touchmoveHandler = mousemoveHandler;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        svg.addEventListener("touchstart", touchstartHandler);
+        svg.addEventListener("touchend", touchendHandler);
+        svg.addEventListener('mousedown', mousedownHandler);
+        svg.addEventListener('mouseup', mouseupHandler);
+
+        div.addEventListener('mousemove', mousemoveHandler);
+        svg.addEventListener('touchmove', touchmoveHandler);
+    })
+</script>
+</html>

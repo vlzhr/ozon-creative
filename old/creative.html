@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ozon Creative</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="main.css">
+    <script src="game-data.js"></script>
+</head>
+<body>
+    <main>
+        <div class="game">
+            <div class="canvas">
+                <div class="item-photo">
+                    <img src="item-1.png" alt="" class="item-image">
+                    <div class="item-name">Apple iPhone 7 Plus 32GB</div>
+                </div>
+            </div>
+            <div class="flying-price">
+                <span class="old-price-label">50000rub</span>
+            </div>
+            <div class="discount">- 5000 &#8381;</div>
+
+            <div class="action-price">
+                <img src="final-price.png" alt="">
+                <span class="final-price-label">40000rub</span>
+            </div>
+        </div>
+        <div class="win-screen">
+            <div class="win-message" onclick="location='https://ozon.ru';"></div>
+        </div>
+
+    </main>
+</body>
+<script>
+    var explosionDuration = 1000;
+    var showItemInfoDuration = 2000;
+    var priceFlightDuration = 3000;
+    var finalPrice, itemName, price, oldPriceLabel, finalPriceLabel, itemImage;
+    var gameNode, discount, discountFinalPosition, canvas;
+    var beingMoved = false;
+    var exposedNow = false;
+    var step = -1;
+    var points = 0;
+    var pointsNeeded = 3;
+    var currentElWasSliced = false;
+
+    function nextStep(becauseOfNonActivity) {
+        if (exposedNow) { return; }
+
+        step++;
+        if (!becauseOfNonActivity) {
+            points++;
+        }
+
+        var currentItem = gameItems[step % gameItems.length];
+
+        itemImage.src = currentItem["image"];
+        itemName.innerText = currentItem["name"];
+        finalPriceLabel.innerText = currentItem["new-price"];
+        oldPriceLabel.innerText = currentItem["old-price"];
+        discount.innerHTML = currentItem["discount"];
+        canvas.style.borderColor = currentItem["border-color"];
+
+        toTheFlightStep();
+    }
+
+    function toTheFlightStep() {
+        price.classList.add("fly-animated");
+        price.style.display = "block";
+        finalPrice.classList.remove("shown");
+        itemName.style.display = "none";
+
+        window.setTimeout(function() {
+            if (!currentElWasSliced) {
+                currentElWasSliced = false;
+                nextStep(true);
+            }
+        }, priceFlightDuration)
+    }
+
+    function startGame() {
+        finalPrice = document.querySelector(".action-price");
+        itemName = document.querySelector(".item-name");
+        price = document.querySelector(".flying-price");
+        oldPriceLabel = document.querySelector(".old-price-label");
+        finalPriceLabel = document.querySelector(".final-price-label");
+        itemImage = document.querySelector(".item-image");
+        gameNode = document.querySelector(".game");
+        discount = document.querySelector(".discount");
+        canvas = document.querySelector(".canvas");
+        discountFinalPosition = [finalPrice.getBoundingClientRect().left+100, -document.body.getBoundingClientRect().top + finalPrice.getBoundingClientRect().top];
+        // discountFinalPosition = [100, 400];
+
+        toTheFlightStep();
+
+        document.body.addEventListener("mousedown", function() {beingMoved = true});
+        document.body.addEventListener("mouseup", function() {beingMoved = false});
+
+        document.body.addEventListener("mousemove", fieldTouchHandler);
+        document.body.addEventListener("touchmove", fieldTouchHandler);
+
+        price.classList.add("fly-animated");
+        nextStep();
+        // showItemInfo();
+
+    }
+    
+    function finishGame() {
+        showWinScreen();
+    }
+    
+    function explosionAnimation() {
+        oldPriceLabel.innerText = "";
+        price.classList.add("bomb");
+
+        var priceRect = price.getBoundingClientRect();
+        var currentCoords = [priceRect.left, priceRect.top];
+        price.style.cssText = "left: " + currentCoords[0] + "px; top: " + currentCoords[1] + "px;";
+        price.classList.remove("fly-animated");
+
+        discount.style.cssText = "left: " + currentCoords[0] + "px; top: " + currentCoords[1] + "px;";
+        window.setTimeout(function() {
+            discountFlight();
+        }, 100);
+
+    }
+    
+    function discountFlight() {
+        discount.classList.add("active");
+        discount.style.top = discountFinalPosition[1] + "px";
+        discount.style.left = discountFinalPosition[0] + "px";
+        window.setTimeout(function() {
+            discount.style.cssText = "";
+            discount.classList.remove("active");
+        }, showItemInfoDuration+explosionDuration-100)
+    }
+
+    function showItemInfo() {
+        exposedNow = true;
+        explosionAnimation();
+
+        window.setTimeout(function() {
+            price.style.display = "none";
+            price.classList.remove("bomb");
+            finalPrice.classList.add("shown");
+            itemName.style.display = "block";
+            gameNode.classList.add("sliced");
+
+            currentElWasSliced = true;
+
+            window.setTimeout(function() {
+                currentElWasSliced = false;
+                if (points >= pointsNeeded) {
+                    finishGame();
+                } else {
+                    gameNode.classList.remove("sliced");
+                    exposedNow = false;
+                    price.style.cssText = "";
+                    nextStep();
+                }
+            }, showItemInfoDuration);
+        }, explosionDuration);
+
+    }
+
+    var priceTouchThrottle = false;
+    function priceTouchHandler(event) {
+        if (!priceTouchThrottle) {
+            priceTouchThrottle = true;
+            window.setTimeout(function() { priceTouchThrottle = false; }, 1000);
+            showItemInfo();
+        }
+    }
+    function fieldTouchHandler(event) {
+        var x,y;
+
+        x = event.clientX;
+        y = event.clientY;
+
+        if (!(x && y)) {
+            x = event.changedTouches[0].clientX;
+            y = event.changedTouches[0].clientY;
+        } else if (!beingMoved) {
+            return;
+        }
+
+        var targetElement = document.elementFromPoint(x, y);
+        if (targetElement === price) {
+            window.setTimeout(priceTouchHandler, 200);
+        }
+    }
+
+
+    var images = [];
+    function preload() {
+        for (var i = 0; i < arguments.length; i++) {
+            images[i] = new Image();
+            images[i].src = preload.arguments[i];
+        }
+    }
+
+    //-- usage --//
+    preload(
+        "item-1.png",
+        "item-2.png",
+        "item-3.png",
+        "https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif",
+        "background-play.jpg",
+        "background-win.jpg"
+    );
+
+    function showWinScreen() {
+        document.querySelector(".win-message").classList.add("shown");
+        price.remove();
+        document.querySelector(".canvas").style.opacity = "0";
+        finalPrice.style.opacity = "0";
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        startGame();
+    });
+</script>
+</html>
