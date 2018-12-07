@@ -22,12 +22,13 @@
             <div class="flying-price">
                 <span class="old-price-label"></span>
             </div>
-            <div class="discount">- 5000 &#8381;</div>
-
             <div class="action-price">
                 <img src="images/smile-positive.png" alt="">
                 <span class="final-price-label"></span>
             </div>
+        </div>
+        <div class="discount-container">
+            <div class="discount"></div>
         </div>
         <div class="win-screen">
             <div class="win-message" onclick="location='https://ozon.ru';"></div>
@@ -37,10 +38,11 @@
 </body>
 <script>
     var explosionDuration = 1000;
-    var showItemInfoDuration = 2000;
+    var showItemInfoDuration = 3000;
     var priceFlightDuration = 3000;
+    var showDiscountDuration = 3000;
     var finalPrice, itemName, price, oldPriceLabel, finalPriceLabel, itemImage;
-    var gameNode, discount, discountFinalPosition, canvas;
+    var gameNode, discount, discountFinalPosition, canvas, discountContainer;
     var beingMoved = false;
     var exposedNow = false;
     var step = -1;
@@ -92,6 +94,7 @@
         gameNode = document.querySelector(".game");
         discount = document.querySelector(".discount");
         canvas = document.querySelector(".canvas");
+        discountContainer = document.querySelector(".discount-container");
         discountFinalPosition = [finalPrice.getBoundingClientRect().left+100, -document.body.getBoundingClientRect().top + finalPrice.getBoundingClientRect().top];
         // discountFinalPosition = [100, 400];
 
@@ -140,31 +143,49 @@
         }, showItemInfoDuration+explosionDuration-100)
     }
 
+    function showDiscount() {
+        discountContainer.classList.add("shown");
+        discount.classList.add("shown");
+        window.setTimeout(function() {
+            discountContainer.classList.remove("shown");
+            discount.classList.remove("shown");
+        }, showDiscountDuration);
+    }
+
     function showItemInfo() {
         exposedNow = true;
         explosionAnimation();
 
-        window.setTimeout(function() {
-            price.style.display = "none";
-            price.classList.remove("bomb");
-            finalPrice.classList.add("shown");
-            itemName.style.display = "block";
-            gameNode.classList.add("sliced");
+        showDiscount();
 
-            currentElWasSliced = true;
 
             window.setTimeout(function() {
-                currentElWasSliced = false;
-                if (points >= pointsNeeded) {
-                    finishGame();
-                } else {
-                    gameNode.classList.remove("sliced");
-                    exposedNow = false;
-                    price.style.cssText = "";
-                    nextStep();
-                }
-            }, showItemInfoDuration);
-        }, explosionDuration);
+
+                price.style.display = "none";
+                price.classList.remove("bomb");
+
+                window.setTimeout(function() {
+                    finalPrice.classList.add("shown");
+                    itemName.style.display = "block";
+                    gameNode.classList.add("sliced");
+
+                    currentElWasSliced = true;
+
+                    window.setTimeout(function() {
+                        currentElWasSliced = false;
+                        if (points >= pointsNeeded) {
+                            finishGame();
+                        } else {
+                            gameNode.classList.remove("sliced");
+                            exposedNow = false;
+                            price.style.cssText = "";
+                            nextStep();
+                        }
+                    }, showItemInfoDuration);
+
+                }, showDiscountDuration-1000);
+
+            }, explosionDuration);
 
     }
 
