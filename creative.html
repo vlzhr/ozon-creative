@@ -6,10 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="game.css">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="waves.css">
     <script src="game-data.js"></script>
 </head>
 <body>
     <main>
+        <div id="waves-wrapper" style="z-index: 1;">
+            <div class="wave">&nbsp;</div>
+            <div class="scrolls">
+            </div>
+        </div>
+
         <div class="game">
             <div class="canvas">
                 <div class="item-photo">
@@ -18,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="fliers-container">
+        <div class="fliers-container" style="z-index: 2">
             <div class="flying-price">
                 <span class="old-price-label"></span>
             </div>
