@@ -53,7 +53,8 @@ body * {
 
     padding-top: 83px;
     text-align: center;
-    color: #222;
+    /*color: #222;*/
+    color: white;
 
     z-index: 940;
     transition: opacity 1s;
@@ -72,6 +73,8 @@ body * {
     /*line-height: 180px;*/
     font-size: 23px;
     top: 77%;
+    color: white;
+    font-weight: lighter;
     /*vertical-align: middle;*/
 }
 .flying-price.chosen {
