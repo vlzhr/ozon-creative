@@ -34,8 +34,17 @@
                 <span class="final-price-label">50rub</span>
             </div>
         </div>
+        <div class="hands">
+            <div class="discount">
+                -50%
+            </div>
+            <div class="price">
+                8900р
+            </div>
+            <img src="images/hands.png" alt="">
+        </div>
         <div class="discount-container">
-            <div class="discount"></div>
+            <div class="old-discount"></div>
         </div>
         <div class="win-screen">
             <div class="win-message" onclick="location='https://ozon.ru';"></div>
@@ -47,7 +56,8 @@
     var explosionDuration = 1000;
     var showItemInfoDuration = 3000;
     var priceFlightDuration = 3000;
-    var showDiscountDuration = 2000;
+    var showDiscountDuration = 4000;
+    var hands;
     var finalPrice, itemName, price, oldPriceLabel, finalPriceLabel, itemImage;
     var gameNode, discount, discountFinalPosition, canvas, discountContainer;
     var beingMoved = false;
@@ -71,8 +81,11 @@
         // itemName.innerText = currentItem["name"];
         finalPriceLabel.innerHTML = currentItem["new-price"];
         oldPriceLabel.innerHTML = currentItem["old-price"];
-        discount.innerHTML = currentItem["discount"];
+        // discount.innerHTML = currentItem["discount"];
         canvas.style.borderColor = currentItem["border-color"];
+
+        hands.discount.innerHTML = currentItem["discount"];
+        hands.price.innerHTML = currentItem["new-price"];
 
         toTheFlightStep();
     }
@@ -99,7 +112,7 @@
         finalPriceLabel = document.querySelector(".final-price-label");
         itemImage = document.querySelector(".item-image");
         gameNode = document.querySelector(".game");
-        discount = document.querySelector(".discount");
+        discount = document.querySelector(".old-discount");
         canvas = document.querySelector(".canvas");
         discountContainer = document.querySelector(".discount-container");
         discountFinalPosition = [finalPrice.getBoundingClientRect().left+100, -document.body.getBoundingClientRect().top + finalPrice.getBoundingClientRect().top];
@@ -159,40 +172,73 @@
         }, showDiscountDuration);
     }
 
+    hands = {
+        price: document.querySelector(".price"),
+        discount: document.querySelector(".discount"),
+        node: document.querySelector(".hands"),
+        show: function(price, discount) {
+            // this.price.innerHTML = price;
+            // this.discount.innerHTML =  discount;
+            this.node.classList.add("shown");
+        },
+        hide: function() {
+            this.node.classList.remove("shown");
+        }
+    };
+
     function showItemInfo() {
         exposedNow = true;
         explosionAnimation();
 
-        showDiscount();
+        // showDiscount();
 
+        window.setTimeout(function() {
+
+            price.style.display = "none";
+            price.classList.remove("bomb");
+
+            currentElWasSliced = true;
+            hands.show();
 
             window.setTimeout(function() {
 
-                price.style.display = "none";
-                price.classList.remove("bomb");
+                hands.hide();
 
-                window.setTimeout(function() {
-                    finalPrice.classList.add("shown");
-                    // itemName.style.display = "block";
-                    gameNode.classList.add("sliced");
+                currentElWasSliced = false;
+                if (points >= pointsNeeded) {
+                    finishGame();
+                } else {
+                    gameNode.classList.remove("sliced");
+                    exposedNow = false;
+                    price.style.cssText = "";
+                    nextStep();
+                }
 
-                    currentElWasSliced = true;
 
-                    window.setTimeout(function() {
-                        currentElWasSliced = false;
-                        if (points >= pointsNeeded) {
-                            finishGame();
-                        } else {
-                            gameNode.classList.remove("sliced");
-                            exposedNow = false;
-                            price.style.cssText = "";
-                            nextStep();
-                        }
-                    }, showItemInfoDuration);
+            }, showDiscountDuration);
 
-                }, showDiscountDuration-1000);
+            // window.setTimeout(function() {
+            //     finalPrice.classList.add("shown");
+            //     // itemName.style.display = "block";
+            //     gameNode.classList.add("sliced");
+            //
+            //     currentElWasSliced = true;
+            //
+            //     window.setTimeout(function() {
+            //         currentElWasSliced = false;
+            //         if (points >= pointsNeeded) {
+            //             finishGame();
+            //         } else {
+            //             gameNode.classList.remove("sliced");
+            //             exposedNow = false;
+            //             price.style.cssText = "";
+            //             nextStep();
+            //         }
+            //     }, showItemInfoDuration);
+            //
+            // }, showDiscountDuration-1000);
 
-            }, explosionDuration);
+        }, explosionDuration-300);
 
     }
 

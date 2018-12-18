@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: Myriad Pro, sans-serif;
 }
 body * {
     -webkit-user-select: none;
@@ -133,17 +133,6 @@ body * {
     background-image: url("https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif");
 }
 
-.discount {
-    content: url("images/discount50.png");
-    pointer-events: none;
-    margin: -100vh auto 0;
-    width: 60%;
-    transition: margin .6s;
-}
-.discount.shown {
-    margin-top: 0;
-}
-
 .item-name {
     position: absolute;
     max-width: 260px;
@@ -178,3 +167,59 @@ body * {
 .action-price img {
     max-height: 100%;
 }
+
+.hands {
+    font-family: Myriad Pro, sans-serif;
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,19,61,0.5);
+    max-height: 700px;
+    z-index: 991;
+    margin-top: 100vh;
+    transition: background-color .1s, margin .7s;
+    color: white;
+}
+.hands.shown {
+    transition: background-color .7s, margin .7s;
+    background-color: rgba(0,19,61,0.5);
+    margin-top: 0;
+}
+.hands img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 992;
+}
+.hands div {
+    position: absolute;
+    z-index: 993;
+}
+.hands .discount {
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    font-size: 78px;
+    font-weight: 800;
+    transform: rotate(-10deg);
+}
+.hands .price {
+    top: 49%;
+    width: 100%;
+    font-size: 48px;
+    text-align: center;
+    font-weight: bolder;
+}
+.hands .price::after {
+    position: absolute;
+    bottom: -20px;
+    font-weight: 200;
+    font-size: 17px;
+    color: #ddd;
+    left: 0;
+    width: 100%;
+    content: "НОВАЯ ЦЕНА";
+}
+
+
