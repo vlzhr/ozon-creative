@@ -174,7 +174,7 @@ body * {
     margin: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0,19,61,0.5);
+    background: rgba(0,19,61,0.0);
     max-height: 700px;
     z-index: 991;
     margin-top: 100vh;
@@ -183,7 +183,7 @@ body * {
 }
 .hands.shown {
     transition: background-color .7s, margin .7s;
-    background-color: rgba(0,19,61,0.5);
+    /*background-color: rgba(0,19,61,0.5);*/
     margin-top: 0;
 }
 .hands img {
