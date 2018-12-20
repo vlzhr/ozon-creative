@@ -93,7 +93,7 @@ body * {
 }
 @keyframes leftChange {
     0% {
-        left: -10%;
+        left: 0%;
     }
     100% {
         left: 75%;
@@ -117,7 +117,7 @@ body * {
 }
 @-webkit-keyframes leftChange1 {
     0% {
-        left: -10%;
+        left: 0%;
     }
     100% {
         left: 75%;
@@ -129,8 +129,11 @@ body * {
 }
 
 .flying-price.bomb {
-    height: 110px;
-    background-image: url("https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif");
+    margin-left: -50px;
+    margin-top: -20px;
+    height: 375px;
+    width: 375px;
+    background-image: url("http://happy-prazdnik-animator.ru/images/anim.gif");
 }
 
 .item-name {
