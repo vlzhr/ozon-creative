@@ -24,10 +24,11 @@
                     <div class="item-name"></div>
                 </div>
             </div>
+            <img class="ny-bag" src="images/ny-bag.png">
         </div>
         <div class="fliers-container" style="z-index: 2">
             <div class="flying-price">
-                <span class="old-price-label">100rub</span>
+                <span class="old-price-label"></span>
             </div>
             <div class="action-price">
                 <img src="images/smile-positive.png" alt="">
@@ -80,9 +81,11 @@
         itemImage.src = currentItem["image"];
         // itemName.innerText = currentItem["name"];
         finalPriceLabel.innerHTML = currentItem["new-price"];
-        oldPriceLabel.innerHTML = currentItem["old-price"];
+        // oldPriceLabel.innerHTML = currentItem["old-price"];
         // discount.innerHTML = currentItem["discount"];
         canvas.style.borderColor = currentItem["border-color"];
+
+        price.style.backgroundImage = "url('"+ currentItem["present-image"] +"')";
 
         hands.discount.innerHTML = currentItem["discount"];
         hands.price.innerHTML = currentItem["new-price"];
@@ -286,7 +289,10 @@
         "item-3.png",
         "https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif",
         "background-play.jpg",
-        "background-win.jpg"
+        "background-win.jpg",
+        "images/present-green.png",
+        "images/present-blue.png",
+        "images/present-red.png"
     );
 
     function showWinScreen() {

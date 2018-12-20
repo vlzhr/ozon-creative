@@ -40,7 +40,7 @@ body * {
 }
 
 .flying-price {
-    background: url(images/smile-negative.png) no-repeat;
+    background: url(images/present-blue.png) no-repeat;
     background-size: cover;
     width: 110px;
     height: 110px;
@@ -197,17 +197,17 @@ body * {
     z-index: 993;
 }
 .hands .discount {
-    top: 25%;
+    top: 32%;
     width: 100%;
     text-align: center;
-    font-size: 78px;
+    font-size: 62px;
     font-weight: 800;
     transform: rotate(-10deg);
 }
 .hands .price {
-    top: 49%;
+    top: 53%;
     width: 100%;
-    font-size: 48px;
+    font-size: 38px;
     text-align: center;
     font-weight: bolder;
 }
