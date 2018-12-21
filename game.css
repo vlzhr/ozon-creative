@@ -31,8 +31,15 @@ body * {
     height: 330px;
     display: flex;
     justify-content: center;
-    margin-left: -25px;
+    margin-left: 5px;
     margin-top: -25px;
+}
+.item-image {
+    opacity: 1;
+}
+.item-image.hidden {
+    transition: opacity .7s;
+    opacity: 0;
 }
 .item-photo img {
     max-width: 100%;
@@ -40,6 +47,7 @@ body * {
 }
 
 .flying-price {
+    opacity: 0;
     background: url(images/present-blue.png) no-repeat;
     background-size: cover;
     width: 110px;
@@ -57,9 +65,9 @@ body * {
     color: white;
 
     z-index: 940;
-    transition: opacity 1s;
 }
 .flying-price.fly-animated {
+    opacity: 1;
     animation: topChange 3s infinite, leftChange 3s infinite, rotation 3s infinite;
     -webkit-animation: topChange1 3s infinite, leftChange1 3s infinite, rotation1 3s infinite;
 }
@@ -128,12 +136,13 @@ body * {
     to { transform: rotate(360deg) }
 }
 
-.flying-price.bomb {
+.price-to-fly.bomb {
+    opacity: 1;
     margin-left: -50px;
     margin-top: -20px;
     height: 375px;
     width: 375px;
-    background-image: url("http://happy-prazdnik-animator.ru/images/anim.gif");
+    background-image: url("images/bomb.gif");
 }
 
 .item-name {
@@ -179,7 +188,7 @@ body * {
     height: 100vh;
     background: rgba(0,19,61,0.0);
     max-height: 700px;
-    z-index: 991;
+    z-index: 999;
     margin-top: 100vh;
     transition: background-color .1s, margin .7s;
     color: white;
@@ -200,15 +209,17 @@ body * {
     z-index: 993;
 }
 .hands .discount {
-    top: 32%;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    bottom: 384px;
     width: 100%;
     text-align: center;
-    font-size: 62px;
+    font-size: 92px;
     font-weight: 800;
     transform: rotate(-10deg);
 }
 .hands .price {
-    top: 53%;
+    bottom: 285px;
     width: 100%;
     font-size: 38px;
     text-align: center;

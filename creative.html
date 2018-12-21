@@ -27,7 +27,7 @@
             <img class="ny-bag" src="images/ny-bag.png">
         </div>
         <div class="fliers-container" style="z-index: 2">
-            <div class="flying-price">
+            <div class="price-to-fly">
                 <span class="old-price-label"></span>
             </div>
             <div class="action-price">
@@ -54,7 +54,7 @@
     </main>
 </body>
 <script>
-    var explosionDuration = 1000;
+    var explosionDuration = 1200;
     var showItemInfoDuration = 3000;
     var priceFlightDuration = 3000;
     var showDiscountDuration = 4000;
@@ -87,10 +87,13 @@
 
         price.style.backgroundImage = "url('"+ currentItem["present-image"] +"')";
 
-        hands.discount.innerHTML = currentItem["discount"];
-        hands.price.innerHTML = currentItem["new-price"];
+        window.setTimeout(() => {
+            hands.discount.innerHTML = currentItem["discount"];
+            hands.price.innerHTML = currentItem["new-price"];
+        }, 700);
 
         toTheFlightStep();
+
     }
 
     function toTheFlightStep() {
@@ -100,9 +103,12 @@
         itemName.style.display = "none";
 
         window.setTimeout(function() {
+            price.classList.remove("fly-animated");
             if (!currentElWasSliced) {
                 currentElWasSliced = false;
-                nextStep(true);
+                window.setTimeout(() => {
+                    nextStep(true);
+                }, 400);
             }
         }, priceFlightDuration)
     }
@@ -110,7 +116,7 @@
     function startGame() {
         finalPrice = document.querySelector(".action-price");
         itemName = document.querySelector(".item-name");
-        price = document.querySelector(".flying-price");
+        price = document.querySelector(".price-to-fly");
         oldPriceLabel = document.querySelector(".old-price-label");
         finalPriceLabel = document.querySelector(".final-price-label");
         itemImage = document.querySelector(".item-image");
@@ -118,8 +124,11 @@
         discount = document.querySelector(".old-discount");
         canvas = document.querySelector(".canvas");
         discountContainer = document.querySelector(".discount-container");
+        nyBagNode = document.querySelector(".ny-bag");
         discountFinalPosition = [finalPrice.getBoundingClientRect().left+100, -document.body.getBoundingClientRect().top + finalPrice.getBoundingClientRect().top];
         // discountFinalPosition = [100, 400];
+
+        price.classList.add("flying-price");
 
         toTheFlightStep();
 
@@ -129,7 +138,11 @@
         document.body.addEventListener("mousemove", fieldTouchHandler);
         document.body.addEventListener("touchmove", fieldTouchHandler);
 
-        price.classList.add("fly-animated");
+        // window.cssAnimationRunDelay = (navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i) ? 1000 : 0);
+        window.setTimeout(() => {
+            price.classList.add("fly-animated");
+        }, 0);
+
         nextStep();
         // showItemInfo();
 
@@ -147,32 +160,6 @@
         var currentCoords = [priceRect.left, priceRect.top];
         price.style.cssText = "left: " + currentCoords[0] + "px; top: " + currentCoords[1] + "px;";
         price.classList.remove("fly-animated");
-
-        discount.style.cssText = "left: " + currentCoords[0] + "px; top: " + currentCoords[1] + "px;";
-        window.setTimeout(function() {
-            discountFlight();
-        }, 100);
-
-    }
-    
-    function discountFlight() {
-        return;
-        discount.classList.add("active");
-        discount.style.top = discountFinalPosition[1] + "px";
-        discount.style.left = discountFinalPosition[0] + "px";
-        window.setTimeout(function() {
-            discount.style.cssText = "";
-            discount.classList.remove("active");
-        }, showItemInfoDuration+explosionDuration-100)
-    }
-
-    function showDiscount() {
-        discountContainer.classList.add("shown");
-        discount.classList.add("shown");
-        window.setTimeout(function() {
-            discountContainer.classList.remove("shown");
-            discount.classList.remove("shown");
-        }, showDiscountDuration);
     }
 
     hands = {
@@ -180,11 +167,13 @@
         discount: document.querySelector(".discount"),
         node: document.querySelector(".hands"),
         show: function(price, discount) {
-            // this.price.innerHTML = price;
-            // this.discount.innerHTML =  discount;
             this.node.classList.add("shown");
+            window.setTimeout(function() {
+                itemImage.classList.add("hidden");
+            }, 0);
         },
         hide: function() {
+            itemImage.classList.remove("hidden");
             this.node.classList.remove("shown");
         }
     };
@@ -218,28 +207,8 @@
                 }
 
 
-            }, showDiscountDuration);
 
-            // window.setTimeout(function() {
-            //     finalPrice.classList.add("shown");
-            //     // itemName.style.display = "block";
-            //     gameNode.classList.add("sliced");
-            //
-            //     currentElWasSliced = true;
-            //
-            //     window.setTimeout(function() {
-            //         currentElWasSliced = false;
-            //         if (points >= pointsNeeded) {
-            //             finishGame();
-            //         } else {
-            //             gameNode.classList.remove("sliced");
-            //             exposedNow = false;
-            //             price.style.cssText = "";
-            //             nextStep();
-            //         }
-            //     }, showItemInfoDuration);
-            //
-            // }, showDiscountDuration-1000);
+            }, showDiscountDuration);
 
         }, explosionDuration-300);
 
@@ -284,9 +253,9 @@
     //-- usage --//
     preload(
         "images/backgeound.png",
-        "item-1.png",
-        "item-2.png",
-        "item-3.png",
+        "items/1.png",
+        "items/2.png",
+        "items/3.png",
         // "https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif",
         "http://happy-prazdnik-animator.ru/images/anim.gif",
         "background-play.jpg",
@@ -297,6 +266,7 @@
     );
 
     function showWinScreen() {
+        nyBagNode.remove();
         document.querySelector(".win-message").classList.add("shown");
         price.remove();
         document.querySelector(".canvas").style.opacity = "0";
