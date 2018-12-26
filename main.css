@@ -88,3 +88,48 @@ main {
 }
 
 
+.flying-price.fly-animated.tutored {
+    animation: topChange 3s infinite, leftChange 3s infinite;
+    -webkit-animation: topChange1 3s infinite, leftChange1 3s infinite;
+}
+.flying-price.tutored::after {
+    content: "";
+    background: url("images/cursor.png") no-repeat;
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    animation: cursorMovement 1s infinite;
+    -webkit-animation: cursorMovement1 1s infinite;
+}
+
+@keyframes cursorMovement {
+    0% {
+        top: 100px;
+        left: 0px;
+    }
+    40% {
+        top: 0px;
+        left: 60px;
+    }
+    100% {
+          top: 100px;
+          left: 0px;
+    }
+}
+@-webkit-keyframes cursorMovement1 {
+    0% {
+        top: 100px;
+        left: 0px;
+    }
+    40% {
+        top: 0px;
+        left: 60px;
+    }
+    100% {
+        top: 100px;
+        left: 0px;
+    }
+}
+
+

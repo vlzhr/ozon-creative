@@ -76,6 +76,11 @@
         step++;
         if (!becauseOfNonActivity) {
             points++;
+            price.classList.remove("tutored");
+        } else {
+            if (points < 2) {
+                price.classList.add("tutored");
+            }
         }
 
         var currentItem = gameItems[step % gameItems.length];
