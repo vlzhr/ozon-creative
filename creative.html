@@ -76,11 +76,11 @@
         step++;
         if (!becauseOfNonActivity) {
             points++;
-            price.classList.remove("tutored");
-        } else {
-            if (points < 2) {
-                price.classList.add("tutored");
+            if (step > 0) {
+                price.classList.remove("tutored");
             }
+        } else {
+            price.classList.add("tutored");
         }
 
         var currentItem = gameItems[step % gameItems.length];
@@ -136,6 +136,9 @@
         // discountFinalPosition = [100, 400];
 
         price.classList.add("flying-price");
+        window.setTimeout(() => {
+            price.classList.add("tutored");
+        }, 200);
 
         toTheFlightStep();
 
@@ -160,6 +163,7 @@
     }
     
     function explosionAnimation() {
+        price.classList.remove("tutored");
         oldPriceLabel.innerText = "";
         price.classList.add("bomb");
 
@@ -259,17 +263,15 @@
 
     //-- usage --//
     preload(
-        "images/backgeound.png",
+        "images/background.png",
         "items/10.png",
         "items/8.png",
         "items/7.png",
-        // "https://media.giphy.com/media/ahza0v6s5pSxy/200w.gif",
-        "http://happy-prazdnik-animator.ru/images/anim.gif",
-        "background-play.jpg",
-        "background-win.jpg",
         "images/present-green.png",
         "images/present-blue.png",
-        "images/present-red.png"
+        "images/present-red.png",
+        "images/bomb.gif",
+        "images/cursor.png"
     );
 
     function showWinScreen() {
