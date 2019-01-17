@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="game.css">
     <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="waves.css">
     <script src="game-data.js"></script>
 </head>
 <body>
@@ -35,7 +34,7 @@
                 <span class="final-price-label">50rub</span>
             </div>
         </div>
-        <div class="hands shown">
+        <div class="hands">
             <div class="text">
                 <div class="discount">
                     -50%
@@ -275,10 +274,9 @@
     );
 
     function showWinScreen() {
-        nyBagNode.remove();
         document.querySelector(".win-message").classList.add("shown");
         price.remove();
-        document.querySelector(".canvas").style.opacity = "0";
+        document.querySelector(".canvas").remove();
         finalPrice.style.opacity = "0";
     }
 
@@ -288,7 +286,7 @@
             e.preventDefault();
         }, { passive: false });
 
-        // startGame();
+        startGame();
         // showWinScreen();
     });
 </script>
