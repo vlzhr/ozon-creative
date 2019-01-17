@@ -218,15 +218,15 @@ body * {
 .hands .discount {
     font-smooth: never;
     -webkit-font-smoothing : none;
-    top: 18%;
+    top: 11%;
     width: 100%;
     text-align: center;
     font-size: 92px;
     font-weight: 800;
-    transform: rotate(-10deg);
+    transform: rotate(-5deg);
 }
 .hands .price {
-    top: 42%;
+    top: 38%;
     width: 100%;
     font-size: 38px;
     text-align: center;
@@ -244,7 +244,7 @@ body * {
 }
 
 
-@media only screen and (max-device-width: 350px) {
+@media only screen and (max-device-width: 380px) {
 
     .item-photo {
         width: 249px;
